@@ -4,19 +4,17 @@ import Steps from "@/components/steps";
 import { useState } from "react";
 
 export default function Home() {
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
 
   return (
     <main className="flex items-center justify-center h-screen">
-      <button
+      {/* <button
         onClick={() => setOpen(true)}
         className="p-4 m-4 text-white bg-blue-500 rounded-lg"
       >
         Open Modal
-      </button>
+      </button> */}
       <Steps
-        open={open}
-        setOpen={setOpen}
         steps={[
           <div>This is Step 1</div>,
           <div>This is Step 2</div>,
