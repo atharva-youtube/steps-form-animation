@@ -16,12 +16,12 @@ export default function Home() {
       </button>
       <Steps
         open={open}
+        setOpen={setOpen}
         steps={[
           <div>This is Step 1</div>,
           <div>This is Step 2</div>,
           <div>This is Step 3</div>,
           <div>This is Step 4</div>,
-          <div>This is Step 5</div>,
         ]}
       >
         <h1 className="text-2xl font-semibold mb-3">Complete registration</h1>

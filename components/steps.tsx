@@ -8,42 +8,25 @@ type Props = {
   children?: ReactNode;
   steps: ReactNode[];
   open?: boolean;
+  setOpen: (open: boolean) => void;
 };
 
-export default function Steps({ children, steps, open }: Props) {
+export default function Steps({ children, steps, open, setOpen }: Props) {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const prevButtonAnimControls = useAnimationControls();
   const contButtonAnimControls = useAnimationControls();
   const progressBarAnimControls = useAnimationControls();
-  const progressBarRef = useRef<HTMLDivElement>(null);
 
   const prevButtonVariants = {
     opening: {
-      // width: "auto",
       x: 0,
       opacity: 1,
     },
     initial: {
-      // width: "0px",
       x: "-100%",
       opacity: 0,
     },
   };
-
-  console.log(progressBarRef.current?.scrollWidth);
-
-  // const progressBarVariants = {
-  //   initial: { x: -50 },
-  //   // animate: { width: `${(currentStep / (steps.length - 1)) * 100 + 10}%` },
-  //   // animate: {
-  //   //   width: `${
-  //   //     progressBarRef.current?.scrollWidth! / (currentStep + 1) + 10
-  //   //   }px`,
-  //   // },
-  //   animate: {
-  //     x: progressBarRef.current?.scrollWidth! / (currentStep + 1) + 10,
-  //   },
-  // };
 
   const progressBarVariants = {
     initial: { width: `${100 / steps.length}%` },
@@ -57,11 +40,8 @@ export default function Steps({ children, steps, open }: Props) {
   }, [currentStep, progressBarAnimControls, steps.length]);
 
   useEffect(() => {
-    console.log("Current Step:", currentStep); // Debugging step
     if (currentStep === 1) {
       prevButtonAnimControls.start("opening");
-      contButtonAnimControls.start("animate");
-    } else {
     }
   }, [currentStep, prevButtonAnimControls, contButtonAnimControls]);
 
@@ -69,12 +49,12 @@ export default function Steps({ children, steps, open }: Props) {
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 bg-opacity-50 bg-black">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-11 rounded-2xl text-black text-lg">
+      <div className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-11 rounded-2xl text-black text-lg">
         {children}
         {steps[currentStep]}
 
         <div className="flex justify-center gap-5 mt-5">
-          <div className="relative flex py-1" ref={progressBarRef}>
+          <div className="relative flex py-1">
             <motion.div
               className="absolute rounded-full top-1/2 left-0 h-full bg-green-500"
               style={{ transform: "translateY(-50%)" }}
@@ -108,7 +88,7 @@ export default function Steps({ children, steps, open }: Props) {
               variants={prevButtonVariants}
               onClick={() => setCurrentStep((prev) => prev - 1)}
               disabled={currentStep === 0}
-              className="px-5 py-3 text-black bg-gray-200 rounded-full"
+              className="px-5 py-3 text-black transition-colors bg-gray-200 hover:bg-gray-300 rounded-full"
             >
               Back
             </motion.button>
@@ -118,7 +98,7 @@ export default function Steps({ children, steps, open }: Props) {
             // animate={contButtonAnimControls}
             onClick={() => setCurrentStep((prev) => prev + 1)}
             disabled={currentStep === steps.length - 1}
-            className="flex items-center justify-center gap-2 px-5 py-3 text-white bg-blue-500 rounded-full flex-grow"
+            className="flex items-center justify-center gap-2 px-5 py-3 text-white bg-blue-500 hover:bg-blue-600 transition-colors rounded-full flex-grow"
             transition={{
               type: "spring",
               stiffness: 500,
